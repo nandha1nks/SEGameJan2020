@@ -1,6 +1,10 @@
 Software Engineering Lab
+
 Week 1 - Game Development Week
+
 Quantum Physics 101 - A game on Stern Gerlach's experiment in Quantum Mechanics
+
+
 Team 4 - CS17B003 Abishekh P, CS17B004 Aliasgar Musani, CS17B021 Nandhakumar K
 -----------------------------------------------------------------------------
 
