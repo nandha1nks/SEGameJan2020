@@ -61,7 +61,6 @@
      <Compile Include="Assets\GameOverScript.cs" />
      <Compile Include="Assets\Inventory.cs" />
      <Compile Include="Assets\MainMenuControllerScript.cs" />
-     <None Include="Assets\ColorfulButtons\Credits.txt" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>E:/Unity Projects/SEGame/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>

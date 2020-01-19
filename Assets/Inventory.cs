@@ -24,29 +24,29 @@ public class Inventory : MonoBehaviour, IHasChanged
     public void HasChanged()
     {
         System.Text.StringBuilder builder = new System.Text.StringBuilder();
-        builder.Append("-");
-        int i = 0, itemToBeChecked = 0, input = noInputs, lastDirection = inputDirection;
+        builder.Append("0-");
+        int i = 0, itemToBeChecked = 0, input = noInputs, lastDirection = inputDirection, lastItem = 0;
         foreach (Transform slotTransform in slots)
         {
             if(i == itemToBeChecked)
             {
-                if(slotTransform.childCount > 0)
+                if (slotTransform.childCount > 0)
                 {
                     Transform item = slotTransform.GetChild(0);
-                    if(item.tag[0]-48 == input)
+                    if (item.tag[0] - 48 == input)
                     {
-                        if(item.tag[1] == 'C')
+                        if (item.tag[1] == 'C')
                         {
                             input = 1;
-                            if(item.tag[2] == 'x')
+                            if (item.tag[2] == 'x')
                             {
                                 lastDirection = 0;
-                                itemToBeChecked += 1;
+                                lastItem = itemToBeChecked; itemToBeChecked += 1;
                             }
                             else
                             {
                                 lastDirection = 1;
-                                itemToBeChecked += n;
+                                lastItem = itemToBeChecked; itemToBeChecked += n;
                             }
                         }
                         else if (item.tag[1] == 'Q')
@@ -55,30 +55,36 @@ public class Inventory : MonoBehaviour, IHasChanged
                             if (item.tag[2] == 'x')
                             {
                                 lastDirection = 0;
-                                itemToBeChecked += 1;
+                                lastItem = itemToBeChecked; itemToBeChecked += 1;
                             }
                             else
                             {
                                 lastDirection = 1;
-                                itemToBeChecked += n;
+                                lastItem = itemToBeChecked; itemToBeChecked += n;
                             }
                         }
-                        else if(item.tag[1] == 'D')
+                        else if (item.tag[1] == 'D')
                         {
                             input = 1;
                             lastDirection = 2;
-                            itemToBeChecked += n + 1;
+                            lastItem = itemToBeChecked; itemToBeChecked += n + 1;
                         }
                     }
-                    else if(item.tag == "Block")
+                    else if (item.tag == "Block")
                     {
                         input = 1;
                         if (lastDirection == 0)
-                            itemToBeChecked += 1;
+                        {
+                            lastItem = itemToBeChecked; itemToBeChecked += 1;
+                        }
                         else if (lastDirection == 1)
-                            itemToBeChecked += n;
+                        {
+                            lastItem = itemToBeChecked; itemToBeChecked += n;
+                        }
                         else if (lastDirection == 2)
-                            itemToBeChecked += n + 1;
+                        {
+                            lastItem = itemToBeChecked; itemToBeChecked += n + 1;
+                        }
                     }
                     else
                     {
@@ -88,22 +94,41 @@ public class Inventory : MonoBehaviour, IHasChanged
                 else
                 {
                     if (lastDirection == 0)
-                        itemToBeChecked += 1;
+                    { lastItem = itemToBeChecked; itemToBeChecked += 1; }
                     else if (lastDirection == 1)
-                        itemToBeChecked += n;
+                    { lastItem = itemToBeChecked; itemToBeChecked += n; }
                     else if (lastDirection == 2)
-                        itemToBeChecked += n + 1;
+                    {   lastItem = itemToBeChecked; itemToBeChecked += n + 1;
+                }
                 }
                 builder.Append(itemToBeChecked);
                 builder.Append("-");
+                
             }
             i += 1;
         }
-        inventoryText.text = builder.ToString();
-        if(itemToBeChecked >= m*n && input == noOutputs && lastDirection == outputDirection)
+        builder.Append("\nNumber of Outputs = ");
+        builder.Append(input);
+        builder.Append("\nDirection is ");
+        if (lastDirection == 0)
         {
-            GameOverScript.level = level ;
+            builder.Append("horizontal");
+        }
+        else if (lastDirection == 1)
+        {
+            builder.Append("vertical");
+
+        }
+        else if (lastDirection == 2)
+        {
+            builder.Append("diagonal");
+        }
+        inventoryText.text = builder.ToString();
+        if(lastItem == m*n-1 && input == noOutputs && lastDirection == outputDirection)
+        {
+            GameOverScript.level = level;
             SceneManager.LoadScene(5);
+            PlayerPrefs.SetInt("LevelPassed",level);
         }
     }
 
